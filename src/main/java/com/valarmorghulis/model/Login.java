@@ -21,8 +21,18 @@ public class Login {
     private String password;
     @Column(name = "balance")
     private long balance;
+    @Column(name = "gcm_token")
+    private String gcmToken;
 
     public Login() {
+    }
+
+    public String getGcmToken() {
+        return gcmToken;
+    }
+
+    public void setGcmToken(String gcmToken) {
+        this.gcmToken = gcmToken;
     }
 
     public long getBalance() {

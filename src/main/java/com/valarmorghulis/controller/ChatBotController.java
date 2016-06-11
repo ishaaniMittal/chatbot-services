@@ -1,13 +1,14 @@
 package com.valarmorghulis.controller;
 
+import com.valarmorghulis.model.BotReq;
 import com.valarmorghulis.model.BotResp;
 import com.valarmorghulis.model.Greeting;
+import com.valarmorghulis.model.Login;
 import com.valarmorghulis.service.ChatbotService;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -19,13 +20,14 @@ import java.io.IOException;
 @RequestMapping("/chatBot")
 public class ChatBotController {
 
+    @Autowired
     private ChatbotService chatBotService;
 
-    @RequestMapping("/postQues/{ques}")
-    public @ResponseBody
-    BotResp provideResponse(@PathVariable("ques") String ques) throws IOException, ParseException {
-
-        return chatBotService.provideResponse(ques);
+    @RequestMapping(value = "/postQues", method = RequestMethod.POST)
+    @ResponseBody
+    public BotResp provideResponse(@RequestBody BotReq request) throws IOException, ParseException {
+        int i=0;
+        return chatBotService.provideResponse(request);
     }
 
 }
