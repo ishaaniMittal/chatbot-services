@@ -75,6 +75,7 @@ public class ChatbotService {
         //dao callfor dbresp
         String dbResp="";
         String otherDetails = checkDetails(entities,req.getReqParameters());
+        dbResp+=otherDetails;
         botResp.setResponse(dbResp);
         botResp.setChatParameters(req.getReqParameters());
 
@@ -113,7 +114,7 @@ public class ChatbotService {
 
         }
         checkTransfer(params,res);
-        return null;
+        return res;
     }
 
     private void checkTransfer(HashMap params, String res) {
