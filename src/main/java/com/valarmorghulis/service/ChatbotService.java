@@ -4,7 +4,6 @@ import com.valarmorghulis.model.BotResp;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -21,7 +20,7 @@ public class ChatbotService {
         String key = "IX7KP54MZTMAR3UJLQ5Y2JHVVQSR7SP3";
 
         String param1 = "20160611";
-        String param2 = "Hi";
+        String param2 = ques;
         String charset = "UTF-8";
 
         String query = String.format("v=" + URLEncoder.encode(param1, charset) + "&q=" +
