@@ -1,8 +1,6 @@
 package com.valarmorghulis.dao;
 
-import com.valarmorghulis.model.Greeting;
 import com.valarmorghulis.model.Login;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;
@@ -13,4 +11,5 @@ import javax.transaction.Transactional;
 @Transactional
 public interface LoginDao extends CrudRepository<Login,Integer> {
 
+    Login findByUserName(String username);
 }

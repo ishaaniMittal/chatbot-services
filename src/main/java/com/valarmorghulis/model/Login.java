@@ -3,7 +3,6 @@ package com.valarmorghulis.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * Created by Alekhya on 11-06-2016.
@@ -20,8 +19,18 @@ public class Login {
     private String userName;
     @Column(name = "password")
     private String password;
+    @Column(name = "balance")
+    private long balance;
 
     public Login() {
+    }
+
+    public long getBalance() {
+        return balance;
+    }
+
+    public void setBalance(long balance) {
+        this.balance = balance;
     }
 
     public Login(String userName, String password) {
