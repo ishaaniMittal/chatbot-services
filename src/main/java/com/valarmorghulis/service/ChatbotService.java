@@ -1,8 +1,10 @@
 package com.valarmorghulis.service;
 
+import com.valarmorghulis.dao.ETQDao;
 import com.valarmorghulis.model.Beneficiary;
 import com.valarmorghulis.model.BotReq;
 import com.valarmorghulis.model.BotResp;
+import com.valarmorghulis.model.Topic;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -28,6 +30,10 @@ public class ChatbotService {
 
     @Autowired
     BeneficiaryService beneficiaryService;
+
+    @Autowired
+    ETQDao etqDao;
+
 
     public BotResp provideResponse(BotReq req) throws IOException, ParseException {
         String url = "https://api.wit.ai/message";
@@ -71,7 +77,11 @@ public class ChatbotService {
             //System.out.println(value);
             entityMap.put(entity,value);
         }
-
+        String topic = decideTopic(entities);
+        if(topic!=null)
+        {
+           req.getReqParameters().put("topic",topic);
+        }
         //dao callfor dbresp
         String dbResp="";
         String otherDetails = checkDetails(entities,req.getReqParameters());
@@ -81,6 +91,19 @@ public class ChatbotService {
 
 
         return botResp;
+    }
+
+    private String decideTopic(HashMap entities) {
+        Set set = entities.keySet();
+        Iterator it = set.iterator();
+        while(it.hasNext())
+        {
+            String entity = it.next().toString();
+            Topic topic = etqDao.getTopic(entity);
+            return topic.getName();
+        }
+
+        return null;
     }
 
     private String checkDetails(HashMap entities,HashMap params) {
