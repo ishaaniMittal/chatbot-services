@@ -1,6 +1,8 @@
 package com.valarmorghulis.service;
 
-import com.valarmorghulis.model.AddBeneficiaryRequest;
+import com.valarmorghulis.dao.BeneficiaryDao;
+import com.valarmorghulis.model.AddBeneficiary;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,8 +11,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class BeneficiaryService {
 
-    public boolean addBeneficiary(AddBeneficiaryRequest request){
+    @Autowired
+    private BeneficiaryDao beneficiaryDao;
 
+    public boolean addBeneficiary(AddBeneficiary request){
+        beneficiaryDao.save(request);
         return false;
     }
 }

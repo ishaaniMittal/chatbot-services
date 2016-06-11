@@ -1,7 +1,7 @@
 package com.valarmorghulis.model;
 
 /**
- * Created by Alekhya on 11-06-2016.
+ * Created by imittal on 6/11/16.
  */
 public class BotResp {
 
@@ -18,4 +18,5 @@ public class BotResp {
     public void setResponse(String response) {
         this.response = response;
     }
+
 }
