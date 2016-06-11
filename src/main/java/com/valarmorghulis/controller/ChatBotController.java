@@ -3,6 +3,7 @@ package com.valarmorghulis.controller;
 import com.valarmorghulis.model.BotResp;
 import com.valarmorghulis.model.Greeting;
 import com.valarmorghulis.service.ChatbotService;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,7 @@ public class ChatBotController {
 
     @RequestMapping("/postQues/{ques}")
     public @ResponseBody
-    BotResp provideResponse(@PathVariable("ques") String ques) throws IOException {
+    BotResp provideResponse(@PathVariable("ques") String ques) throws IOException, ParseException {
 
         return chatBotService.provideResponse(ques);
     }
