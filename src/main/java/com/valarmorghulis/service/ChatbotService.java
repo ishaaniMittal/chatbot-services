@@ -37,9 +37,9 @@ public class ChatbotService {
 
     public BotResp provideResponse(BotReq req) throws IOException, ParseException {
         String url = "https://api.wit.ai/message";
-        String key = "IX7KP54MZTMAR3UJLQ5Y2JHVVQSR7SP3";
+        String key = "7D6SBYV522DKGVN45BKFISHPNSSNP5SZ";
 
-        String param1 = "20160611";
+        String param1 = "20160612";
         String param2 = req.getQues();
         String charset = "UTF-8";
         BotResp botResp = new BotResp();
@@ -68,6 +68,16 @@ public class ChatbotService {
         Set set = entities.keySet();
         Iterator it = set.iterator();
         HashMap<String,String> entityMap = new HashMap();
+        String dbResp="";
+        String topic = decideTopic(entities);
+        if(topic!=null)
+        {
+            req.getReqParameters().put("topic",topic);
+        }
+        else
+        {
+            topic = (String) req.getReqParameters().get("topic");
+        }
         while(it.hasNext())
         {
             String entity = it.next().toString();
@@ -75,15 +85,19 @@ public class ChatbotService {
             HashMap map = (HashMap) array.get(0);
             String value = map.get("value").toString();
             //System.out.println(value);
-            entityMap.put(entity,value);
+            entityMap.put(entity, value);
+            if(topic!=null) {
+                dbResp+=etqDao.getResponse(entity,topic );
+            }
+            else
+            {
+                dbResp+="I didn't quiet follow you";
+            }
         }
-        String topic = decideTopic(entities);
-        if(topic!=null)
-        {
-           req.getReqParameters().put("topic",topic);
-        }
-        //dao callfor dbresp
-        String dbResp="";
+
+
+
+
         String otherDetails = checkDetails(entities,req.getReqParameters());
         dbResp+=otherDetails;
         botResp.setResponse(dbResp);
@@ -100,43 +114,45 @@ public class ChatbotService {
         {
             String entity = it.next().toString();
             Topic topic = etqDao.getTopic(entity);
-            return topic.getName();
+            if(topic!=null)
+                return topic.getName();
         }
-
         return null;
     }
 
     private String checkDetails(HashMap entities,HashMap params) {
-        String res="";
-        //db call to get list of entities for a topic
-        List<String> topicEntities=null;
-        Set set = entities.keySet();
-        Iterator it = set.iterator();
-        while(it.hasNext()) {
-            String entity = it.next().toString();
-            if(topicEntities.contains(entity)){
-                JSONArray array = (JSONArray) entities.get(entity);
-                HashMap map = (HashMap) array.get(0);
-                String value = map.get("value").toString();
-                //System.out.println(value);
-                params.put(entity,value);
-            }
+        String res = "";
+        String topic= (String) params.get("topic");
+        if(topic!=null) {
 
-        }
-        Beneficiary ben =new Beneficiary();
-        boolean created = createBenRequest(params,ben);
-        if(created){
-            boolean b = beneficiaryService.addBeneficiary(ben);
-            if(b)
-            {
-                res+="\nBeneficiary added!";
-            }
-            else{
-                res+="\nBeneficiary not added :(";
-            }
+            List<String> topicEntities = etqDao.getEntititiesForTopic(topic);
 
+            Set set = entities.keySet();
+            Iterator it = set.iterator();
+            while (it.hasNext()) {
+                String entity = it.next().toString();
+                if (topicEntities.contains(entity)) {
+                    JSONArray array = (JSONArray) entities.get(entity);
+                    HashMap map = (HashMap) array.get(0);
+                    String value = map.get("value").toString();
+                    //System.out.println(value);
+                    params.put(entity, value);
+                }
+
+            }
+            Beneficiary ben = new Beneficiary();
+            boolean created = createBenRequest(params, ben);
+            if (created) {
+                boolean b = beneficiaryService.addBeneficiary(ben);
+                if (b) {
+                    res += "\nBeneficiary added!";
+                } else {
+                    res += "\nBeneficiary not added :(";
+                }
+
+            }
+            checkTransfer(params, res);
         }
-        checkTransfer(params,res);
         return res;
     }
 

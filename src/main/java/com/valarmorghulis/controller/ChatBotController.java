@@ -6,6 +6,7 @@ import com.valarmorghulis.model.Greeting;
 import com.valarmorghulis.model.Login;
 import com.valarmorghulis.service.ChatbotService;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,12 +20,13 @@ import java.io.IOException;
 @RequestMapping("/chatBot")
 public class ChatBotController {
 
+    @Autowired
     private ChatbotService chatBotService;
 
     @RequestMapping(value = "/postQues", method = RequestMethod.POST)
     @ResponseBody
     public BotResp provideResponse(@RequestBody BotReq request) throws IOException, ParseException {
-
+        int i=0;
         return chatBotService.provideResponse(request);
     }
 
