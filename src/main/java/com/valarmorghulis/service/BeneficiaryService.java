@@ -2,7 +2,7 @@ package com.valarmorghulis.service;
 
 import com.valarmorghulis.dao.BeneficiaryDao;
 import com.valarmorghulis.dao.LoginDao;
-import com.valarmorghulis.model.AddBeneficiary;
+import com.valarmorghulis.model.Beneficiary;
 import com.valarmorghulis.model.Login;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class BeneficiaryService {
     @Autowired
     private LoginDao loginDao;
 
-    public boolean addBeneficiary(AddBeneficiary request) {
+    public boolean addBeneficiary(Beneficiary request) {
         beneficiaryDao.save(request);
         return false;
     }
