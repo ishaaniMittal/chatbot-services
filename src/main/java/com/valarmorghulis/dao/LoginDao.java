@@ -12,5 +12,5 @@ import javax.transaction.Transactional;
 public interface LoginDao extends CrudRepository<Login, Integer> {
     Login findByUserName(String username);
 
-    boolean updateToken(String gcmToken);
+    //boolean updateGcmToken(String gcmToken);
 }
